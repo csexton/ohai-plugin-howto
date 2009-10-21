@@ -18,7 +18,7 @@ Ohai plugins use a ruby DSL. The following is about as simple as it gets:
 
 Now that part I found tricky, loading it.
 
-Create a "plugins" folder and put the above code in a "orly.rb" file.
+Create a "plugins" folder and put the above code in the [orly.rb](http://github.com/csexton/ohai-plugin-howto/blob/master/orly.rb) file.
 
 Now to fire up irb (I am assuming you are in the directory that contains the "plugins" folder, if not adjust your path):
 
@@ -35,27 +35,27 @@ Using a Mash
 
 Most of the information we want to lookup would be nested in some way, and ohai tends to do this by storing the data in a Mash. This can be done by creating a new mash and setting the attribute to it.
 
-In plugins/canhas.rb:
+In [plugins/canhas.rb](http://github.com/csexton/ohai-plugin-howto/blob/master/plugin/canhaz.rb):
 
     provides "canhas"
     canhas Mash.new
     canhas[:burger] = "want"
 
-Extending a plugin
-==================
+Extending an existing plugin
+============================
 
-Ohai makes it very easy to extend a current plugin with new informaiton. Simply require the plugin you want to extend and extend away.
+Ohai makes it very easy to extend a current plugin with new information. Simply require the plugin you want to extend and extend away. In this example we want to add LOLCODE to languages.
 
 
-In plugins/lolcode.rb:
+In [plugins/lolcode.rb](http://github.com/csexton/ohai-plugin-howto/blob/master/plugins/lolcode.rb):
 
     provides "languages/lolcode"
     require_plugin "languages"
     languages[:lolcode] = Mash.new
     languages[:lolcode][:version] = "TEH VERSHIONS"
 
-Diffrent platforms
-==================
+Working with Different Platforms
+================================
 
 
 One of the main reasons for using ohai is to gather information regardless of the operating system, luckily this is made easy by optinally loading recipies based on the platform. With that platform specific calls abstracted away you can keep your code DRY.
@@ -63,7 +63,7 @@ One of the main reasons for using ohai is to gather information regardless of th
 The builtin plugins that come with ohai use the following trick to load platform specific code. It works by creating a base cross-platform plugin that loads the platform specific plugin from a subdirectory.
 
 
-In plugins/lolcode.rb:
+In [plugins/lolcode.rb](http://github.com/csexton/ohai-plugin-howto/blob/master/plugins/lolcode.rb):
 
     provides "languages/lolcode"
     require_plugin "languages"
@@ -72,11 +72,13 @@ In plugins/lolcode.rb:
     languages[:lolcode] = Mash.new unless languages[:lolcode]
     languages[:lolcode][:version] = "TEH VERSHIONS"
 
-In plugins/darwin/lolcode.rb:
+In [plugins/darwin/lolcode.rb](http://github.com/csexton/ohai-plugin-howto/blob/master/plugins/darwin/lolcode.rb):
 
     provides "languages/lolcode"
     require_plugin "languages"
     languages[:lolcode] = Mash.new unless languages[:lolcode]
     languages[:lolcode][:platform] = "MACKERS"
 
-Checkout [os.rb](http://github.com/opscode/ohai/blob/master/lib/ohai/plugins/os.rb) for the list of platform names.
+Checkout ohai's [os.rb](http://github.com/opscode/ohai/blob/master/lib/ohai/plugins/os.rb) for the list of platform names.
+
+All of these examples can be found in the [ohai-plugin-howto github repo](http://github.com/csexton/ohai-plugin-howto/), you should be able to clone that and run the ruby scripts in the repo's root directory.
